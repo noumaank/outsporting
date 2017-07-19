@@ -31,6 +31,12 @@ class Emp extends CI_Controller {
         $data = array();
 
         if ($this->session->userdata('isUserLoggedIn')) {
+            if ($this->session->userdata('success_msg')) {
+                $data['msg'] = $this->session->userdata('success_msg');
+            } else {
+                $data['msg'] = '';
+            }
+            $data['tripRecord'] = $this->employee->getTripRecords(array('emp_id' => $this->session->userdata('userId')));
             $data['createProcessForm'] = base_url() . 'emp/createProcessForm';
             $data['emp'] = $this->employee->getRows(array('id' => $this->session->userdata('userId'), 'status' => 1));
 
@@ -53,16 +59,10 @@ class Emp extends CI_Controller {
                         break;
                     }
             endswitch;
-
-//load the view
         } else {
             redirect('emp/login');
         }
     }
-
-    /*
-     * Vendors login
-     */
 
     public function login() {
         $data = array();
@@ -124,6 +124,7 @@ class Emp extends CI_Controller {
     }
 
     public function createProcessForm() {
+        $this->session->set_userdata('success_msg', '');
         if ($this->session->userdata('isUserLoggedIn')) {
             $data['createProcess'] = base_url() . 'emp/createProcess';
             $this->load->view('emp/createProcessForm', $data);
@@ -133,7 +134,8 @@ class Emp extends CI_Controller {
     }
 
     public function createProcess() {
-//        print_r($this->input->post('CustomerContactNumber'));
+//        echo "<pre>";
+//        print_r($this->input->post());
 //        die;
         $this->load->model('employee');
         $data['empId'] = $this->input->post('empId');
@@ -147,49 +149,20 @@ class Emp extends CI_Controller {
         $data['endTime'] = $this->input->post('endTime');
         $data['status'] = $this->input->post('status');
         $data['bookingComments'] = $this->input->post('bookingComments');
-        $data['customerName'][] = $this->input->post('customerName');
-        $data['CustomerContactNumber'][] = $this->input->post('CustomerContactNumber');
-
-        $this->employee->insert(array('id' => $this->session->userdata('userId'), 'data' => $data));
-
-//        print_r($this->input->post());
-//        die;
-        $customername[] = $this->input->post('customerName');
-        $CustomerContactNumber[] = $this->input->post('CustomerContactNumber');
-//        print_r($CustomerContactNumber);
-//        echo"---------------------------------------";
-//        print_r($this->input->post('CustomerContactNumber'));
-//        //  foreach ())
-//        die;
-        $data = array();
-        $userData = array();
+        $custInfo['customerName'] = $this->input->post('customerName');
+        $custInfo['CustomerContactNumber'] = $this->input->post('CustomerContactNumber');
+        $custInfo['CustomerAge'] = $this->input->post('CustomerAge');
+        $custInfo['CustomerSex'] = $this->input->post('gender');
         if ($this->input->post()) {
-//            $this->form_validation->set_rules('name', 'Name', 'required');
-//            $this->form_validation->set_rules('password', 'password', 'required');
-//            $customerInfo = array('customerName'=>,'CustomerContactNumber'=>,'gender'=>)
-
-            $userData = array(
-                'date' => strip_tags($this->input->post('date')),
-                'activity' => strip_tags($this->input->post('activity')),
-                'vendor' => md5($this->input->post('vendor')),
-                'customerCount' => strip_tags($this->input->post('customerCount')),
-                'gender' => $this->input->post('gender'),
-            );
-
-            if ($this->form_validation->run() == true) {
-                $this->load->model('employee');
-                $insert = $this->employee->createProcess($userData);
-                if ($insert) {
-                    $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
-                    redirect('emp/account');
-                } else {
-                    $data['error_msg'] = 'Some problems occured, please try again.';
-                }
+            $insert = $this->employee->createProcess(array('data' => $data, 'custInfo' => $custInfo));
+            if (isset($insert) && $insert != '') {
+                $this->session->set_userdata('success_msg', 'Trip was created successfully!');
+                redirect('emp/employeeAccount');
+            } else {
+                $data['error_msg'] = 'Some problems occured, please try again.';
+                redirect('emp/createProcessForm');
             }
         }
-//        $data['user'] = $userData;
-////load the view
-//        $this->load->view('inv/createProcess', $data);
     }
 
     public function test() {

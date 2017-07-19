@@ -33,28 +33,28 @@
                             </div>
                             <div class="form-group">
                                 <label> Vendor:</label> <select name="vendor">
-                                    <option value="0-vendorId" >None(Get dynamically)</option>
-                                    <option value="1-vendorId">V1 Vendor</option>
-                                    <option value="2-vendorId">V2 Vendor</option>
-                                    <option value="3-vendorId">V3 Vendor</option>
+                                    <option value="0" >None(Get dynamically)</option>
+                                    <option value="1">V1 Vendor</option>
+                                    <option value="2">V2 Vendor</option>
+                                    <option value="3">V3 Vendor</option>
 
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label> Pilot:</label> <select name="pilot">
-                                    <option value="0-pilotId" >None(Get dynamically)</option>
-                                    <option value="1-pilotId">P1</option>
-                                    <option value="2-pilotId">P2</option>
-                                    <option value="3-pilotId">P3</option>
+                                    <option value="0" >None(Get dynamically)</option>
+                                    <option value="1">P1</option>
+                                    <option value="2">P2</option>
+                                    <option value="3">P3</option>
 
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label> Boat Id:</label> <select name="boat">
-                                    <option value="0-boatId" >None(Get dynamically)</option>
-                                    <option value="1-boatId">B1 Vendor</option>
-                                    <option value="2-boatId">B2 Vendor</option>
-                                    <option value="3-boatId">B3 Vendor</option>
+                                    <option value="0" >None(Get dynamically)</option>
+                                    <option value="1">B1 Vendor</option>
+                                    <option value="2">B2 Vendor</option>
+                                    <option value="3">B3 Vendor</option>
 
                                 </select>
                             </div>
@@ -66,31 +66,25 @@
                             </div>
                             <div class="form-group">
                                 <label> Start Time:</label> <select name="startTime">
-                                    <option value="0-timestrt" >None(Get dynamically)</option>
-                                    <option value="1-timestrt">9:00 </option>
-                                    <option value="2-timestrt">9:30 </option>
-                                    <option value="3-timestrt">10:00 </option>
-                                    <option value="4-timestrt">10:30 </option>
-
-                                </select>
-                                <select name="startTimeAmPm">
-                                    <option value="1">AM </option>
-                                    <option value="2">PM </option>
+                                    <option value="9:00">9:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
 
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label> End Time:</label> <select name="endTime">
-                                    <option value="0-timestrt" >None(Get dynamically)</option>
-                                    <option value="1-timestrt">12:00 </option>
-                                    <option value="2-timestrt">12:30 </option>
-                                    <option value="3-timestrt">01:00 </option>
-                                    <option value="4-timestrt">01:30 </option>
-
-                                </select>
-                                <select name="endTimeAmPm">
-                                    <option value="1">AM </option>
-                                    <option value="2">PM </option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
 
                                 </select>
                             </div>
