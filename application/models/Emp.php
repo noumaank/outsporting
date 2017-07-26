@@ -38,7 +38,6 @@ class emp extends CI_Controller {
             }
             $data['tripRecord'] = $this->employee->getTripRecords(array('emp_id' => $this->session->userdata('userId')));
             $data['createProcessForm'] = base_url() . 'Emp/createProcessForm';
-             $data['updateProcessForm'] = base_url() . 'Emp/updateProcessForm';
             $data['emp'] = $this->employee->getRows(array('id' => $this->session->userdata('userId'), 'status' => 1));
 
             $emp_type = $data['emp']['emp_type'];
@@ -127,32 +126,8 @@ class emp extends CI_Controller {
     public function createProcessForm() {
         $this->session->set_userdata('success_msg', '');
         if ($this->session->userdata('isUserLoggedIn')) {
-            $data['createProcess'] = base_url() . 'Emp/createProcess';            
-             $data['tripList'] = $this->employee->getActivityList();
-            $data['boatList'] =$this->employee->getBoatList();
-             $data['vendorList'] = $this->employee->getVendorList();
-             $data['pilotList'] = $this->employee->getPilotList();
+            $data['createProcess'] = base_url() . 'Emp/createProcess';
             $this->load->view('Emp/createProcessForm', $data);
-        } else {
-            redirect('Emp/login');
-        }
-    }
-
-        public function updateProcessForm($id) {
-
-            $record = $this->employee->getTripRecords(array('emp_id' => $this->session->userdata('userId'), 'booking_id'=>$id));
-             foreach( $record as $res){
-                $data['tripRecord'] = $res;
-             }
-        $this->session->set_userdata('success_msg', '');
-        if ($this->session->userdata('isUserLoggedIn')) {
-            $data['updateProcess'] = base_url() . 'Emp/updateProcess';            
-             $data['tripList'] = $this->employee->getActivityList();
-            $data['boatList'] =$this->employee->getBoatList();
-             $data['vendorList'] = $this->employee->getVendorList();
-             $data['pilotList'] = $this->employee->getPilotList();
-             $data['booking_id'] = $id;
-            $this->load->view('Emp/updateProcessForm', $data);
         } else {
             redirect('Emp/login');
         }
@@ -174,8 +149,12 @@ class emp extends CI_Controller {
         $data['endTime'] = $this->input->post('endTime');
         $data['status'] = $this->input->post('status');
         $data['bookingComments'] = $this->input->post('bookingComments');
+        $custInfo['customerName'] = $this->input->post('customerName');
+        $custInfo['CustomerContactNumber'] = $this->input->post('CustomerContactNumber');
+        $custInfo['CustomerAge'] = $this->input->post('CustomerAge');
+        $custInfo['CustomerSex'] = $this->input->post('gender');
         if ($this->input->post()) {
-            $insert = $this->employee->createProcess($data);
+            $insert = $this->employee->createProcess(array('data' => $data, 'custInfo' => $custInfo));
             if (isset($insert) && $insert != '') {
                 $this->session->set_userdata('success_msg', 'Trip was created successfully!');
                 redirect('Emp/employeeAccount');
@@ -185,38 +164,6 @@ class emp extends CI_Controller {
             }
         }
     }
-
-        public function updateProcess() {
-       // echo "<pre>";
-       // print_r($this->input->post());
-       // die;
-        $this->load->model('employee');
-         $data['bookingId'] = $this->input->post('bookingId');
-        $data['empId'] = $this->input->post('empId');
-        $data['activity'] = $this->input->post('activity');
-        $data['vendor'] = $this->input->post('vendor');
-        $data['pilot'] = $this->input->post('pilot');
-        $data['boat'] = $this->input->post('boat');
-        $data['customerCount'] = $this->input->post('customerCount');
-        $data['Tripdate'] = $this->input->post('Tripdate');
-        $data['startTime'] = $this->input->post('startTime'); //am pm to be added or time to be converted in hours
-        $data['endTime'] = $this->input->post('endTime');
-        $data['status'] = $this->input->post('status');
-        $data['bookingComments'] = $this->input->post('bookingComments');
-        if ($this->input->post()) {
-            $insert = $this->employee->updateProcess($data);
-            if (isset($insert) && $insert != '') {
-                $this->session->set_userdata('success_msg', 'Trip was created successfully!');
-                redirect('Emp/employeeAccount');
-            } else {
-                $data['error_msg'] = 'Some problems occured, please try again.';
-                redirect('Emp/createProcessForm');
-            }
-        }
-    }
-
-
-
 
     public function test() {
         print_r('test controller');

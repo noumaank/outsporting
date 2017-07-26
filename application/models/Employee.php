@@ -56,7 +56,12 @@ class Employee extends CI_Model {
         $this->db->join('trip_details_vendor_maping as vm', 'vm.id = td.vendor_id');
         $this->db->join('trip_details_pilot_maping as pm', 'pm.id = td.pilot_id');
         $this->db->join('trip_details_boat_maping as bm', 'bm.id = td.boat_id');
-        //$this->db->order_by("td.Sno", "desc");
+        $this->db->where('td.emp_id', $params['emp_id']);
+        if(isset($params['booking_id']) && $params['booking_id'] !='' && $params['booking_id']!=0){
+          $this->db->where('td.booking_id', $params['booking_id']);  
+        }
+         
+        $this->db->order_by("td.Sno", "desc");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             $data = $query->result();
@@ -64,6 +69,55 @@ class Employee extends CI_Model {
         return $data;
         //return fetched data
         //return $result;
+    }
+
+        function getActivityList() {
+        $this->db->select('*');
+        $this->db->from('trip_type_maping');
+        $this->db->where('is_active = 1');
+        //$this->db->order_by("td.Sno", "desc");
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            $data = $query->result();
+        }
+        return $data;
+    }
+
+
+        function getBoatList() {
+        $this->db->select('*');
+        $this->db->from('trip_details_boat_maping');
+        $this->db->where('is_active = 1');
+        //$this->db->order_by("td.Sno", "desc");
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            $data = $query->result();
+        }
+        return $data;
+    }
+
+        function getVendorList() {
+        $this->db->select('*');
+        $this->db->from('trip_details_vendor_maping');
+        $this->db->where('is_active = 1');
+        //$this->db->order_by("td.Sno", "desc");
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            $data = $query->result();
+        }
+        return $data;
+    }
+
+        function getPilotList() {
+        $this->db->select('*');
+        $this->db->from('trip_details_pilot_maping');
+        $this->db->where('is_active = 1');
+        //$this->db->order_by("td.Sno", "desc");
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            $data = $query->result();
+        }
+        return $data;
     }
 
     /*
@@ -102,16 +156,9 @@ class Employee extends CI_Model {
         $bookingId = $lastId->booking_id + 1;
 
 
-        $tripInfo = array('emp_id' => $data['data']['empId'], 'booking_id' => $bookingId, 'activity_id' => $data['data']['activity'], 'vendor_id' => $data['data']['vendor'], 'pilot_id' => $data['data']['pilot'], 'boat_id' => $data['data']['boat'], 'total_seats' => $data['data']['customerCount'], 'trip_date' => $data['data']['Tripdate'], 'start_time' => $data['data']['startTime'], 'end_time' => $data['data']['endTime'], 'status' => $data['data']['status'], 'comment' => $data['data']['bookingComments']);
+        $tripInfo = array('emp_id' => $data['empId'], 'booking_id' => $bookingId, 'activity_id' => $data['activity'], 'vendor_id' => $data['vendor'], 'pilot_id' => $data['pilot'], 'boat_id' => $data['boat'], 'total_seats' => $data['customerCount'], 'trip_date' => $data['Tripdate'], 'start_time' => $data['startTime'], 'end_time' => $data['endTime'], 'status' => $data['status'], 'comment' => $data['bookingComments']);
         //insert user data to users table
         $insert = $this->db->insert($table, $tripInfo);
-        $table = 'trip_details_customers';
-        foreach ($data['custInfo']['customerName'] as $key => $res):
-            $customerInfo = array('booking_id' => $bookingId, 'customer_name' => $res, 'customer_phone' => $data['custInfo']['CustomerContactNumber'][$key], 'customer_age' => $data['custInfo']['CustomerAge'][$key], 'customer_sex' => $data['custInfo']['CustomerSex'][$key], 'date_modified' => time());
-            //insert user data to users table
-
-            $insert = $this->db->insert($table, $customerInfo);
-        endforeach;
         //return the status
         if ($insert) {
             return $this->db->insert_id();
@@ -119,5 +166,23 @@ class Employee extends CI_Model {
             return false;
         }
     }
+
+
+   public function updateProcess($data = array()) {
+
+    //add created and modified data if not included
+        if (!array_key_exists("created", $data)) {
+            $data['created'] = date("Y-m-d H:i:s");
+        }
+        if (!array_key_exists("modified", $data)) {
+            $data['modified'] = date("Y-m-d H:i:s");
+        }
+      $tripInfo = array('emp_id' => $data['empId'],'activity_id' => $data['activity'], 'vendor_id' => $data['vendor'], 'pilot_id' => $data['pilot'], 'boat_id' => $data['boat'], 'total_seats' => $data['customerCount'], 'trip_date' => $data['Tripdate'], 'start_time' => $data['startTime'], 'end_time' => $data['endTime'], 'status' => $data['status'], 'comment' => $data['bookingComments']);
+
+    $this->db->where('booking_id', $data['bookingId']);
+    $this->db->update('trip_details', $tripInfo);
+            return true;
+    
+}
 
 }

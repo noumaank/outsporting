@@ -12,18 +12,12 @@
 
         <!-- Container element -->
         <div class="parallax"></div>
-        //<?php
-//        echo "<pre>";
-//        print_r($tripRecord);
-//        die;
-//
-        ?>
 
         <div class="container">
             <div class="form-group pull-left"><label><?php echo $msg; ?></label>
                 <div class="form-group pull-right"><label for="logout" ><a href="<?php echo base_url(); ?>emp/logout">Logout</a></label>
                 </div>
-                <h2>User Account</h2>
+                <h2>Employee Account</h2>
                 <h3>Welcome <?php echo $emp['fname']; ?>!</h3>
                 <div class="account-info">
                     <p><b>Name: </b><?php echo $emp['fname'] . " " . $emp['lname']; ?></p>
@@ -50,6 +44,7 @@
                                 <td class="text-center"><?php echo "Reporting Time"; ?></td>
                                 <td class="text-center"><?php echo "Status"; ?></td>
                                 <td class="text-center"><?php echo "Comment "; ?></td>
+                                <td class="text-center"><?php echo "Edit"; ?></td>
 
                             </tr>
                         </thead>
@@ -71,6 +66,7 @@
                                     <td><p><?php echo $res->reporting_time; ?></p></td>
                                     <td><p><?php echo $res->status; ?></p></td>
                                     <td><p><?php echo $res->comment; ?></p></td>
+                                     <td><a href = "<?php echo $updateProcessForm.'/'.$res->booking_id; ?>"> <span class="glyphicon glyphicon-edit"></span></a></td>
 
 
                                 </tr>
@@ -80,10 +76,7 @@
                 </div>
 
                 <div class="form-group">
-                    <a href="<?php echo $createProcessForm; ?>"> <input type="submit" name="CreatProcess" class="btn btn-primary" value="CreatProcess"/> </a>
-                </div>
-                <div class="form-group">
-                    <input type="submit" name="updateProcessSubmit" class="btn btn-primary" value="UpdateProcess"/>
+                    <a href="<?php echo $createProcessForm; ?>"> <input type="submit" name="CreatProcess" class="btn btn-primary" value="Creat New Process"/> </a>
                 </div>
                 <div class="form-group">
                     <input type="submit" name="assignProcessSubmit" class="btn btn-primary" value="AssignProcess"/>

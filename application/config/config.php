@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | a PHP script and you can easily do that on your own.
   |
  */
-$config['base_url'] = '';
+$config['base_url'] = 'http://192.168.0.125/outsporting/';
 
 /*
   |--------------------------------------------------------------------------
@@ -36,7 +36,8 @@ $config['base_url'] = '';
   | variable so that it is blank.
   |
  */
-$config['index_page'] = '';
+//$config['index_page'] = 'index.php';
+$config['index_page'] = 'index.php';
 
 /*
   |--------------------------------------------------------------------------
@@ -54,7 +55,6 @@ $config['index_page'] = '';
   | WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
  */
 $config['uri_protocol'] = 'REQUEST_URI';
-//$config['uri_protocol'] = "AUTO";
 
 /*
   |--------------------------------------------------------------------------
